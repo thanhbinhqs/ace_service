@@ -3,7 +3,7 @@ from distutils.util import split_quoted
 
 from flask import Flask, request, Response
 
-from acestream_search.acestream_search import main as engine, get_options, __version__
+from acestream_search import main as engine, get_options
 
 app = Flask(__name__)
 if sys.version_info[0] > 2:
@@ -43,8 +43,7 @@ def main():
         for page in engine(args):
             yield page + '\n'
 
-    if 'version' in args:
-        return Response(__version__ + '\n', content_type='text/plain')
+
     if 'help' in args:
         return Response(args.help, content_type='text/plain')
     if 'usage' in args:

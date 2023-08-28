@@ -1,7 +1,9 @@
-FROM vstavrinov/acestream-engine
+FROM ace-engine
 WORKDIR /srv/ace
 ENV COLUMNS=116
 ADD search.py .
+ADD acestream_search.py .
+
 USER root
 RUN apt-get update;                                          \
     apt-get --yes install nginx;                             \
@@ -9,8 +11,7 @@ RUN apt-get update;                                          \
     ln -sf /dev/stderr /var/log/nginx/error.log;             \
     ln -sf /dev/stdout /var/log/nginx/access.log;            \
     chown -R ace . /etc/nginx /var/lib/nginx /var/log/nginx; \
-    pip install --no-cache-dir gunicorn flask                \
-        git+https://github.com/thanhbinhqs/ace_search.git
+    pip install --no-cache-dir gunicorn flask;       
 COPY default.conf /etc/nginx/sites-available/default
 USER ace
 CMD sed -e "s/PORT/${PORT:=8888}/"               \
